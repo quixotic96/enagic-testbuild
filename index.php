@@ -1,10 +1,44 @@
+<?php
+$CFerrors = '';
+$CFmyemail = 'areyougood96@hotmail.com';//<-----Put Your email address here.
+if(empty($_POST['name'])  ||
+   empty($_POST['email']) ||
+   empty($_POST['message']))
+{
+    $CFerrors .= "\n Error: all fields are required";
+}
+$CFname = $_POST['name'];
+$CFemail_address = $_POST['email'];
+$CFmessage = $_POST['message'];
+if (!preg_match(
+"/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/i",
+$CFemail_address))
+{
+    $CFerrors .= "\n Error: Invalid email address";
+}
+
+if( empty($errors))
+{
+$CFto = $CFmyemail;
+$CFemail_subject = "Contact form submission: $CFname";
+$CFemail_body = "You have received a new message. ".
+" Here are the details:\n Name: $CFname \n ".
+"Email: $CFemail_address\n Message \n $CFmessage";
+$CFheaders = "From: $CFmyemail\n";
+$CFheaders .= "Reply-To: $CFemail_address";
+mail($CFto,$CFemail_subject,$CFemail_body,$CFheaders);
+//redirect to the 'thank you' page
+header('Location: contact-form-thank-you.html');
+}
+?>
+
 <!DOCTYPE HTML>
 <!--
 	Massively by HTML5 UP
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
-<html>
+<html lang='en'>
 	<head>
 		<title>Big Lifestyle Movement</title>
 		<meta charset="utf-8" />
@@ -71,7 +105,7 @@
 				<!-- Footer -->
 					<footer id="footer">
 						<section>
-							<form method="post" action="#">
+							<form method="post" action="?">
 								<div class="field">
 									<label for="name">Name</label>
 									<input type="text" name="name" id="name" />
